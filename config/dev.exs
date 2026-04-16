@@ -10,7 +10,7 @@ config :ms_backend, MsBackendWeb.Endpoint,
 
 config :ms_backend, MsBackend.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "Cocoliso3388*",
   hostname: "localhost",
   port: 5432,
   database: "los_libros_de_ivonnet_dev",
@@ -23,6 +23,7 @@ config :ms_backend,
   resend_from: "onboarding@resend.dev",
   frontend_url: "http://localhost:5174",
   admin_url: "http://localhost:5175",
+  mailer_enabled: true,
   log_level: :debug
 
 config :logger, :console, format: "[$level] $message\n"

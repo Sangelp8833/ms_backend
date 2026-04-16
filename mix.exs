@@ -37,11 +37,9 @@ defmodule MsBackend.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:joken, "~> 2.6"},
+      {:pbkdf2_elixir, "~> 2.2"},
       {:elixir_uuid, "~> 1.2"},
-      {:tzdata, "~> 1.1"},
-      {:ex_aws, "~> 2.5"},
-      {:ex_aws_s3, "~> 2.5"},
-      {:hackney, "~> 1.18"}
+      {:tzdata, "~> 1.1"}
     ]
   end
 

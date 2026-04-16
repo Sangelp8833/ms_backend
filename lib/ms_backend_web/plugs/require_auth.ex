@@ -8,7 +8,7 @@ defmodule MsBackendWeb.Plugs.RequireAuth do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, claims}        <- MsBackend.Auth.verify_token(token) do
       conn
-      |> assign(:current_user_id, claims["sub"])
+      |> assign(:current_user_id,   claims["sub"])
       |> assign(:current_user_role, claims["role"])
     else
       _ ->

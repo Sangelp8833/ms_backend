@@ -7,11 +7,15 @@ config :ms_backend, MsBackendWeb.Endpoint,
 
 config :ms_backend, MsBackend.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "Cocoliso3388*",
   hostname: "localhost",
   database: "los_libros_de_ivonnet_test",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
+
+config :ms_backend,
+  jwt_secret: "test_jwt_secret",
+  mailer_enabled: false
 
 config :logger, level: :warn
 config :phoenix, :plug_init_mode, :runtime

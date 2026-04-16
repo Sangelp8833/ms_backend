@@ -1,20 +1,21 @@
 defmodule MsBackend.Auth do
-  @moduledoc "JWT auth helpers para ms_backend."
+  @moduledoc "JWT helpers para ms_backend."
 
-  @issuer "ms_backend"
-  @ttl_hours 24
+  @ttl_seconds 86_400  # 24 horas
 
   def generate_token(user_id, role) do
+    secret = Application.fetch_env!(:ms_backend, :jwt_secret)
+    now    = System.system_time(:second)
+
     claims = %{
       "sub"  => user_id,
       "role" => role,
-      "iss"  => @issuer,
-      "iat"  => DateTime.utc_now() |> DateTime.to_unix(),
-      "exp"  => DateTime.utc_now() |> DateTime.add(@ttl_hours * 3600, :second) |> DateTime.to_unix()
+      "iat"  => now,
+      "exp"  => now + @ttl_seconds
     }
 
-    secret = Application.fetch_env!(:ms_backend, :jwt_secret)
-    Joken.encode_and_sign(claims, Joken.Signer.create("HS256", secret))
+    signer = Joken.Signer.create("HS256", secret)
+    Joken.encode_and_sign(claims, signer)
   end
 
   def verify_token(token) do
@@ -22,8 +23,16 @@ defmodule MsBackend.Auth do
     signer = Joken.Signer.create("HS256", secret)
 
     case Joken.verify(token, signer) do
-      {:ok, claims} -> {:ok, claims}
-      {:error, reason} -> {:error, reason}
+      {:ok, claims} ->
+        now = System.system_time(:second)
+        if claims["exp"] && claims["exp"] > now do
+          {:ok, claims}
+        else
+          {:error, :expired}
+        end
+
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 end
